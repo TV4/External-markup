@@ -3,12 +3,13 @@
 Plugin Name: External markup
 Description: Retrive parts of external content and include in blog framework
 Author: TV4 AB
-Version: 2.0
+Version: 2.1
 Author URI: http://www.tv4.se
 */
 
 function em_Admin(){
 	if(isset($_POST["submitted"])){
+		check_admin_referer('external-markup', 'external-markup-admin');
 		$em_external_src = $_POST["input_external_src"];
 		$em_external_src_cache = $_POST["input_external_src_cache"];
 		
@@ -42,11 +43,11 @@ function em_Admin(){
 			<table align="left">
 				<tr>
 					<th><label for="input_external_src">External URL:</label></th>
-					<td><input id="input_external_src" name="input_external_src" type="text" value="<?php echo get_option("em_external_src"); ?>" /></td>
+					<td><input id="input_external_src" name="input_external_src" type="text" value="<?php echo htmlspecialchars(get_option("em_external_src")); ?>" /></td>
 				</tr>
 				<tr>
 					<th><label for="input_external_src_cache">External Cache (seconds):</label></th>
-					<td><input id="input_external_src_cache" name="input_external_src_cache" type="text" value="<?php echo get_option("em_external_src_cache"); ?>" /></td>
+					<td><input id="input_external_src_cache" name="input_external_src_cache" type="text" value="<?php echo htmlspecialchars(get_option("em_external_src_cache")); ?>" /></td>
 				</tr>
 			</table>
 			
@@ -65,6 +66,7 @@ function em_Admin(){
 			<div class="clear-float">&nbsp;</div>
 			
 			<p class="submit">
+				<?php wp_nonce_field('external-markup', 'external-markup-admin'); ?>
 				<input name="submitted" type="hidden" value="yes" />
 				<input type="submit" name="Submit" value="Update Options &raquo;" />
 			</p>
